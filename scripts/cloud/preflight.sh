@@ -5,6 +5,7 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 AUTODL_DATA_ROOT="${AUTODL_DATA_ROOT:-/root/autodl-tmp}"
 NUSCENES_ROOT="${NUSCENES_ROOT:-${AUTODL_DATA_ROOT}/datasets/nuscenes}"
 AUTOVLA_CODEBOOK="${AUTOVLA_CODEBOOK:-${AUTODL_DATA_ROOT}/external/AutoVLA/codebook_cache/agent_vocab.pkl}"
+REQUIRE_CODEBOOK="${REQUIRE_CODEBOOK:-0}"
 HF_HOME="${HF_HOME:-${AUTODL_DATA_ROOT}/hf-cache}"
 OUTPUT_ROOT="${OUTPUT_ROOT:-${AUTODL_DATA_ROOT}/runs/m1_qwen3_vl_2b_qlora}"
 MODEL_NAME="${MODEL_NAME:-Qwen/Qwen3-VL-2B-Instruct}"
@@ -64,7 +65,14 @@ for path in "${TRAIN_DATA}" "${VAL_DATA}"; do
   [[ -f "${path}" ]] || { echo "ERROR: missing ${path}" >&2; exit 1; }
 done
 [[ -d "${NUSCENES_ROOT}" ]] || { echo "ERROR: missing nuScenes root ${NUSCENES_ROOT}" >&2; exit 1; }
-[[ -f "${AUTOVLA_CODEBOOK}" ]] || { echo "ERROR: missing trusted codebook ${AUTOVLA_CODEBOOK}" >&2; exit 1; }
+if [[ -f "${AUTOVLA_CODEBOOK}" ]]; then
+  echo "Trusted codebook found: ${AUTOVLA_CODEBOOK}"
+elif [[ "${REQUIRE_CODEBOOK}" == "1" ]]; then
+  echo "ERROR: missing trusted codebook ${AUTOVLA_CODEBOOK}" >&2
+  exit 1
+else
+  echo "WARNING: codebook not found; training can continue, but ADE/FDE evaluation is unavailable"
+fi
 
 python tools/validate_driving_action_data.py \
   "${TRAIN_DATA}" "${VAL_DATA}" \

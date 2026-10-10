@@ -60,7 +60,9 @@ Persistent assets default to `/root/autodl-tmp`: nuScenes under
 `hf-cache`, and checkpoints under `runs`. Override any path with
 `AUTODL_DATA_ROOT`, `NUSCENES_ROOT`, `AUTOVLA_CODEBOOK`, `HF_HOME`, or
 `OUTPUT_ROOT`. Set `ALLOW_DOWNLOAD=1` only when the base model is not already in
-the Hugging Face cache. Resume with `RESUME_FROM=/absolute/checkpoint/path`.
+the Hugging Face cache. The codebook is optional for training because the M1
+JSONL already contains action tokens; use `REQUIRE_CODEBOOK=1` before trajectory
+evaluation. Resume with `RESUME_FROM=/absolute/checkpoint/path`.
 
 ## Free-generation evaluation
 
