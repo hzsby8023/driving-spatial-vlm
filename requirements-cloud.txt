@@ -1,0 +1,9 @@
+# PyTorch is supplied by the AutoDL base image. The versions below match the
+# already-validated driving-spatial-vlm:train environment.
+transformers==5.18.0
+accelerate==1.15.0
+peft==0.21.2
+bitsandbytes==0.50.2
+pillow==10.2.0
+numpy==2.1.2
+pytest>=8,<10

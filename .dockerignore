@@ -1,0 +1,15 @@
+.git
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+data/
+outputs/
+checkpoints/
+logs/
+
+.vscode/
+.idea/
+
+.DS_Store

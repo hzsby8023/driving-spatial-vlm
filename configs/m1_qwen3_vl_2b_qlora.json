@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "run_name": "m1_qwen3_vl_2b_qlora",
+  "model": {
+    "name_or_path": "Qwen/Qwen3-VL-2B-Instruct",
+    "local_files_only": true,
+    "quantized": true,
+    "lora_rank": 8,
+    "max_visual_tokens": 64
+  },
+  "data": {
+    "train": "data/m1/train_sft.jsonl",
+    "val": "data/m1/val_sft.jsonl",
+    "image_root": "/datasets/nuscenes",
+    "cameras": ["CAM_FRONT"],
+    "frames_per_camera": 1,
+    "max_edge": 448,
+    "codec": "greedy_endpoint_proxy_v1",
+    "validate_images": false
+  },
+  "training": {
+    "output_dir": "outputs/m1_qwen3_vl_2b_qlora",
+    "epochs": 2,
+    "gradient_accumulation_steps": 8,
+    "learning_rate": 0.0002,
+    "weight_decay": 0.01,
+    "warmup_steps": 0,
+    "max_grad_norm": 1.0,
+    "seed": 42,
+    "log_every_steps": 10,
+    "save_every_steps": 100,
+    "save_every_epoch": true,
+    "resume_from": null
+  },
+  "evaluation": {
+    "teacher_forced_limit": 10,
+    "generation_limit": 55,
+    "codebook": "/external/AutoVLA/codebook_cache/agent_vocab.pkl"
+  }
+}
